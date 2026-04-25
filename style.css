@@ -26,6 +26,8 @@ body {
     padding: 28px 22px;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    /* Důležité pro plynulé roztažení celého panelu */
+    transition: all 0.4s ease;
 }
 
 .logo-container {
@@ -40,6 +42,10 @@ body {
     border: 2px solid #00d0ff;
     box-shadow: 0 0 15px rgba(0, 208, 255, 0.4);
     object-fit: cover;
+    /* Oprava zrnitosti/aliasingu */
+    image-rendering: high-quality;
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 .hero {
@@ -61,7 +67,7 @@ body {
     min-height: 44px;
 }
 
-/* Stylování Toggle Switche */
+/* Toggle Switch */
 .toggle-container {
     display: flex;
     align-items: center;
@@ -126,20 +132,24 @@ input:checked + .slider:before {
     transform: translateX(24px);
 }
 
-/* Animace pro plynulý přechod obsahu */
+/* Plynulá animace výšky a obsahu */
 .services-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
     opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    visibility: hidden;
+    transition: grid-template-rows 0.4s ease, opacity 0.4s ease, visibility 0.4s;
 }
 
 .services-wrapper.active {
+    grid-template-rows: 1fr;
     opacity: 1;
-    transform: translateY(0);
+    visibility: visible;
 }
 
-#local-services {
-    display: none;
+.inner-content {
+    overflow: hidden;
+    padding-top: 10px;
 }
 
 .section-block + .section-block {
@@ -155,6 +165,7 @@ input:checked + .slider:before {
     text-align: center;
 }
 
+/* Seznamy a odkazy */
 ul {
     list-style: none;
     padding: 0;
