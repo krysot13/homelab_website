@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KolarIT Dashboard</title>
+    <link rel="icon" type="image/jpeg" href="logo.png">
+    <meta name="theme-color" content="#070d14">
+    <link rel="stylesheet" href="style6.css">
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div id="login-overlay" class="cmd-overlay hidden">
+    <div class="cmd-box login-box">
+        <div class="cmd-header">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff4444" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span style="color: #e2e8f0; font-weight: 600; margin-left: 8px;">Ověření identity</span>
+            <kbd class="cmd-esc" id="login-close">ESC</kbd>
+        </div>
+        <div class="login-body">
+            <input type="password" id="login-input" placeholder="Zadejte přístupové heslo..." autocomplete="off">
+            <div id="login-error" class="hidden">Přístup odepřen: Nesprávné heslo.</div>
+        </div>
+        <div class="cmd-footer" style="justify-content: center;">
+            <span><kbd>↵</kbd> potvrdit</span>
+            <span><kbd>ESC</kbd> zrušit</span>
+        </div>
+    </div>
+</div>
+
+<div id="cmd-overlay" class="cmd-overlay hidden">
+    <div class="cmd-box">
+        <div class="cmd-header">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input id="cmd-input" type="text" placeholder="Hledat službu..." autocomplete="off" spellcheck="false">
+            <kbd class="cmd-esc" id="cmd-close">ESC</kbd>
+        </div>
+        <ul id="cmd-results"></ul>
+        <div class="cmd-footer">
+            <span><kbd>↑↓</kbd> navigace</span>
+            <span><kbd>↵</kbd> otevřít</span>
+            <span><kbd>ESC</kbd> zavřít</span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="dashboard">
+        <div class="logo-container">
+            <img src="logo.png" alt="KolarIT Logo" class="logo">
+        </div>
+
+        <div class="hero">
+            <h1 id="main-title" data-text="KolarIT">KolarIT</h1>
+
+            <div class="info-bar">
+                <span id="clock">--:--</span>
+                <span class="info-sep"></span>
+                <span id="date-display">---</span>
+                <span class="info-sep"></span>
+                <button class="cmd-trigger" id="cmd-btn">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    Hledat <kbd>Ctrl + K</kbd>
+                </button>
+                <button class="cmd-trigger auth-btn" id="logout-btn">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    Odhlásit
+                </button>
+            </div>
+        </div>
+
+        <div id="public-services" class="services-wrapper active">
+            <div class="inner-content">
+                <div class="service-grid">
+                    <div class="tile-wrapper">
+                        <a class="tile" href="http://jellyfin.kolarit.online/" target="_blank" rel="noopener noreferrer" data-name="Jellyfin" data-url="http://jellyfin.kolarit.online/">
+                            <div class="tile-icon">
+                                <img src="https://www.google.com/s2/favicons?domain=jellyfin.org&sz=128" alt="">
+                                <span class="status-dot checking"></span>
+                            </div>
+                            <span class="tile-name">Jellyfin</span>
+                        </a>
+                        <div class="neon-tooltip">
+                            <span class="tooltip-url">jellyfin.kolarit.online</span>
+                            <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                        </div>
+                    </div>
+                    <div class="tile-wrapper requires-auth">
+                        <a class="tile" href="http://files.kolarit.online/" target="_blank" rel="noopener noreferrer" data-name="Files" data-url="http://files.kolarit.online/">
+                            <div class="tile-icon">
+                                <img src="https://www.google.com/s2/favicons?domain=filebrowser.org&sz=128" alt="">
+                                <span class="status-dot checking"></span>
+                            </div>
+                            <span class="tile-name">Files</span>
+                        </a>
+                        <div class="neon-tooltip">
+                            <span class="tooltip-url">files.kolarit.online</span>
+                            <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                        </div>
+                    </div>
+                    <div class="tile-wrapper requires-auth">
+                        <a class="tile" href="https://immich.kolarit.online/" target="_blank" rel="noopener noreferrer" data-name="Immich" data-url="https://immich.kolarit.online/">
+                            <div class="tile-icon">
+                                <img src="https://www.google.com/s2/favicons?domain=immich.app&sz=128" alt="">
+                                <span class="status-dot checking"></span>
+                            </div>
+                            <span class="tile-name">Immich</span>
+                        </a>
+                        <div class="neon-tooltip">
+                            <span class="tooltip-url">immich.kolarit.online</span>
+                            <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                        </div>
+                    </div>
+                    <div class="tile-wrapper requires-auth">
+                        <a class="tile" href="https://ha.kolarit.online/" target="_blank" rel="noopener noreferrer" data-name="Home Assistant" data-url="https://ha.kolarit.online/">
+                            <div class="tile-icon">
+                                <img src="https://www.google.com/s2/favicons?domain=home-assistant.io&sz=128" alt="">
+                                <span class="status-dot checking"></span>
+                            </div>
+                            <span class="tile-name">Home Assistant</span>
+                        </a>
+                        <div class="neon-tooltip">
+                            <span class="tooltip-url">ha.kolarit.online</span>
+                            <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                        </div>
+                    </div>
+                    <div class="tile-wrapper">
+                        <a class="tile" href="https://music.kolarit.online/" target="_blank" rel="noopener noreferrer" data-name="Music" data-url="https://music.kolarit.online/">
+                            <div class="tile-icon">
+                                <img src="https://www.google.com/s2/favicons?domain=navidrome.org&sz=128" alt="">
+                                <span class="status-dot checking"></span>
+                            </div>
+                            <span class="tile-name">Music</span>
+                        </a>
+                        <div class="neon-tooltip">
+                            <span class="tooltip-url">music.kolarit.online</span>
+                            <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                        </div>
+                    </div>
+                    <div class="tile-wrapper">
+                        <a class="tile" href="https://jellyseerr.kolarit.online/" target="_blank" rel="noopener noreferrer" data-name="Seerr" data-url="https://jellyseerr.kolarit.online/">
+                            <div class="tile-icon">
+                                <img src="https://www.google.com/s2/favicons?domain=jellyseerr.dev&sz=128" alt="">
+                                <span class="status-dot checking"></span>
+                            </div>
+                            <span class="tile-name">Seerr</span>
+                        </a>
+                        <div class="neon-tooltip">
+                            <span class="tooltip-url">jellyseerr.kolarit.online</span>
+                            <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                        </div>
+                    </div>
+                    <div class="tile-wrapper">
+                        <a class="tile" href="https://app.plex.tv/" target="_blank" rel="noopener noreferrer" data-name="Plex" data-url="https://app.plex.tv/">
+                            <div class="tile-icon">
+                                <img src="https://www.google.com/s2/favicons?domain=plex.tv&sz=128" alt="">
+                                <span class="status-dot checking"></span>
+                            </div>
+                            <span class="tile-name">Plex</span>
+                        </a>
+                        <div class="neon-tooltip">
+                            <span class="tooltip-url">app.plex.tv</span>
+                            <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="local-services" class="services-wrapper">
+            <div class="inner-content">
+                <div class="section-block">
+                    <h3>Servers</h3>
+                    <div class="service-grid">
+                        <div class="tile-wrapper">
+                            <a class="tile" href="http://192.168.0.18/" target="_blank" rel="noopener noreferrer" data-name="ZimaOS" data-url="http://192.168.0.18/">
+                                <div class="tile-icon">
+                                    <img src="https://www.google.com/s2/favicons?domain=zimaspace.com&sz=128" alt="">
+                                    <span class="status-dot checking"></span>
+                                </div>
+                                <span class="tile-name">ZimaOS</span>
+                            </a>
+                            <div class="neon-tooltip">
+                                <span class="tooltip-url">192.168.0.18</span>
+                                <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                            </div>
+                        </div>
+                        <div class="tile-wrapper">
+                            <a class="tile" href="http://192.168.0.13/" target="_blank" rel="noopener noreferrer" data-name="CasaOS" data-url="http://192.168.0.13/">
+                                <div class="tile-icon">
+                                    <img src="https://www.google.com/s2/favicons?domain=casaos.io&sz=128" alt="">
+                                    <span class="status-dot checking"></span>
+                                </div>
+                                <span class="tile-name">CasaOS</span>
+                            </a>
+                            <div class="neon-tooltip">
+                                <span class="tooltip-url">192.168.0.13</span>
+                                <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                            </div>
+                        </div>
+                        <div class="tile-wrapper">
+                            <a class="tile" href="http://192.168.0.16/" target="_blank" rel="noopener noreferrer" data-name="TrueNAS" data-url="http://192.168.0.16/">
+                                <div class="tile-icon">
+                                    <img src="https://www.google.com/s2/favicons?domain=truenas.com&sz=128" alt="">
+                                    <span class="status-dot checking"></span>
+                                </div>
+                                <span class="tile-name">TrueNAS</span>
+                            </a>
+                            <div class="neon-tooltip">
+                                <span class="tooltip-url">192.168.0.16</span>
+                                <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                            </div>
+                        </div>
+                        <div class="tile-wrapper">
+                            <a class="tile" href="http://192.168.101.20:9191/user" target="_blank" rel="noopener noreferrer" data-name="Tisk" data-url="http://192.168.101.20:9191/">
+                                <div class="tile-icon">
+                                    <img src="https://www.google.com/s2/favicons?domain=papercut.com&sz=128" alt="">
+                                    <span class="status-dot checking"></span>
+                                </div>
+                                <span class="tile-name">Tisk</span>
+                            </a>
+                            <div class="neon-tooltip">
+                                <span class="tooltip-url">192.168.101.20:9191</span>
+                                <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-block">
+                    <h3>Local services</h3>
+                    <div class="service-grid">
+                        <div class="tile-wrapper">
+                            <a class="tile" href="http://192.168.0.18:8097" target="_blank" rel="noopener noreferrer" data-name="Jellyfin (Local)" data-url="http://192.168.0.18:8097">
+                                <div class="tile-icon">
+                                    <img src="https://www.google.com/s2/favicons?domain=jellyfin.org&sz=128" alt="">
+                                    <span class="status-dot checking"></span>
+                                </div>
+                                <span class="tile-name">Jellyfin</span>
+                            </a>
+                            <div class="neon-tooltip">
+                                <span class="tooltip-url">192.168.0.18:8097</span>
+                                <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                            </div>
+                        </div>
+                        <div class="tile-wrapper">
+                            <a class="tile" href="http://192.168.0.18:10180" target="_blank" rel="noopener noreferrer" data-name="Files (Local)" data-url="http://192.168.0.18:10180">
+                                <div class="tile-icon">
+                                    <img src="https://www.google.com/s2/favicons?domain=filebrowser.org&sz=128" alt="">
+                                    <span class="status-dot checking"></span>
+                                </div>
+                                <span class="tile-name">Files</span>
+                            </a>
+                            <div class="neon-tooltip">
+                                <span class="tooltip-url">192.168.0.18:10180</span>
+                                <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                            </div>
+                        </div>
+                        <div class="tile-wrapper">
+                            <a class="tile" href="http://192.168.0.18:2283" target="_blank" rel="noopener noreferrer" data-name="Immich (Local)" data-url="http://192.168.0.18:2283">
+                                <div class="tile-icon">
+                                    <img src="https://www.google.com/s2/favicons?domain=immich.app&sz=128" alt="">
+                                    <span class="status-dot checking"></span>
+                                </div>
+                                <span class="tile-name">Immich</span>
+                            </a>
+                            <div class="neon-tooltip">
+                                <span class="tooltip-url">192.168.0.18:2283</span>
+                                <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                            </div>
+                        </div>
+                        <div class="tile-wrapper">
+                            <a class="tile" href="http://192.168.0.14:8123" target="_blank" rel="noopener noreferrer" data-name="Home Assistant (Local)" data-url="http://192.168.0.14:8123">
+                                <div class="tile-icon">
+                                    <img src="https://www.google.com/s2/favicons?domain=home-assistant.io&sz=128" alt="">
+                                    <span class="status-dot checking"></span>
+                                </div>
+                                <span class="tile-name">Home Assistant</span>
+                            </a>
+                            <div class="neon-tooltip">
+                                <span class="tooltip-url">192.168.0.14:8123</span>
+                                <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                            </div>
+                        </div>
+                        <div class="tile-wrapper">
+                            <a class="tile" href="http://192.168.0.18:4533" target="_blank" rel="noopener noreferrer" data-name="Music (Local)" data-url="http://192.168.0.18:4533">
+                                <div class="tile-icon">
+                                    <img src="https://www.google.com/s2/favicons?domain=navidrome.org&sz=128" alt="">
+                                    <span class="status-dot checking"></span>
+                                </div>
+                                <span class="tile-name">Music</span>
+                            </a>
+                            <div class="neon-tooltip">
+                                <span class="tooltip-url">192.168.0.18:4533</span>
+                                <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                            </div>
+                        </div>
+                        <div class="tile-wrapper">
+                            <a class="tile" href="http://192.168.0.18:5055" target="_blank" rel="noopener noreferrer" data-name="Seerr (Local)" data-url="http://192.168.0.18:5055">
+                                <div class="tile-icon">
+                                    <img src="https://www.google.com/s2/favicons?domain=jellyseerr.dev&sz=128" alt="">
+                                    <span class="status-dot checking"></span>
+                                </div>
+                                <span class="tile-name">Seerr</span>
+                            </a>
+                            <div class="neon-tooltip">
+                                <span class="tooltip-url">192.168.0.18:5055</span>
+                                <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                            </div>
+                        </div>
+                        <div class="tile-wrapper">
+                            <a class="tile" href="http://192.168.0.18:32400/" target="_blank" rel="noopener noreferrer" data-name="Plex (Local)" data-url="http://192.168.0.18:32400/">
+                                <div class="tile-icon">
+                                    <img src="https://www.google.com/s2/favicons?domain=plex.tv&sz=128" alt="">
+                                    <span class="status-dot checking"></span>
+                                </div>
+                                <span class="tile-name">Plex</span>
+                            </a>
+                            <div class="neon-tooltip">
+                                <span class="tooltip-url">192.168.0.18:32400</span>
+                                <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="admin-section" class="admin-wrapper">
+            <div class="inner-content">
+                <div class="admin-header">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    <span class="admin-header-text">Admin Mode</span>
+                    <span class="admin-badge">RESTRICTED</span>
+                </div>
+                <div class="admin-grid">
+                    <div class="admin-tile-wrapper">
+                        <a class="admin-tile" href="http://192.168.0.18:9000" target="_blank" rel="noopener noreferrer" data-name="Portainer" data-url="http://192.168.0.18:9000">
+                            <div class="tile-icon">
+                                <img src="https://www.google.com/s2/favicons?domain=portainer.io&sz=128" alt="">
+                                <span class="status-dot checking"></span>
+                            </div>
+                            <span class="tile-name">Portainer</span>
+                        </a>
+                        <div class="neon-tooltip">
+                            <span class="tooltip-url">192.168.0.18:9000</span>
+                            <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                        </div>
+                    </div>
+                    <div class="admin-tile-wrapper">
+                        <a class="admin-tile" href="http://192.168.0.1" target="_blank" rel="noopener noreferrer" data-name="Router" data-url="http://192.168.0.1">
+                            <div class="tile-icon">
+                                <img src="https://www.google.com/s2/favicons?domain=openwrt.org&sz=128" alt="">
+                                <span class="status-dot checking"></span>
+                            </div>
+                            <span class="tile-name">Router</span>
+                        </a>
+                        <div class="neon-tooltip">
+                            <span class="tooltip-url">192.168.0.1</span>
+                            <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                        </div>
+                    </div>
+                    <div class="admin-tile-wrapper">
+                        <a class="admin-tile" href="http://192.168.0.18:8080" target="_blank" rel="noopener noreferrer" data-name="Nginx PM" data-url="http://192.168.0.18:8080">
+                            <div class="tile-icon">
+                                <img src="https://www.google.com/s2/favicons?domain=nginxproxymanager.com&sz=128" alt="">
+                                <span class="status-dot checking"></span>
+                            </div>
+                            <span class="tile-name">Nginx PM</span>
+                        </a>
+                        <div class="neon-tooltip">
+                            <span class="tooltip-url">192.168.0.18:8080</span>
+                            <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                        </div>
+                    </div>
+                    <div class="admin-tile-wrapper">
+                        <a class="admin-tile" href="http://192.168.0.18:3000" target="_blank" rel="noopener noreferrer" data-name="Grafana" data-url="http://192.168.0.18:3000">
+                            <div class="tile-icon">
+                                <img src="https://www.google.com/s2/favicons?domain=grafana.com&sz=128" alt="">
+                                <span class="status-dot checking"></span>
+                            </div>
+                            <span class="tile-name">Grafana</span>
+                        </a>
+                        <div class="neon-tooltip">
+                            <span class="tooltip-url">192.168.0.18:3000</span>
+                            <div class="tooltip-status ts-checking"><span class="ts-dot"></span><span class="ts-text">Kontrola...</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// 1. CANVAS — particle network (výchozí) nebo matrix rain
+// ═══════════════════════════════════════════════════════════
+(function () {
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    let matrixMode = false;
+    let rafId;
+
+    const mouse = { x: -9999, y: -9999 };
+    const N = 65, LINK = 145;
+    let pts = [];
+
+    function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+        if (matrixMode) initMatrix();
+    }
+
+    function mkPt() {
+        return { x: Math.random() * W, y: Math.random() * H,
+                 vx: (Math.random() - .5) * .45, vy: (Math.random() - .5) * .45,
+                 r: Math.random() * 1.4 + .8 };
+    }
+
+    function frameParticles() {
+        if (matrixMode) return;
+        ctx.clearRect(0, 0, W, H);
+        for (let i = 0; i < pts.length; i++) {
+            for (let j = i + 1; j < pts.length; j++) {
+                const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+                const d = Math.hypot(dx, dy);
+                if (d < LINK) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = `rgba(0,208,255,${.16 * (1 - d / LINK)})`;
+                    ctx.lineWidth = .6;
+                    ctx.moveTo(pts[i].x, pts[i].y);
+                    ctx.lineTo(pts[j].x, pts[j].y);
+                    ctx.stroke();
+                }
+            }
+            const md = Math.hypot(pts[i].x - mouse.x, pts[i].y - mouse.y);
+            if (md < LINK * 1.5) {
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(0,208,255,${.4 * (1 - md / (LINK * 1.5))})`;
+                ctx.lineWidth = .8;
+                ctx.moveTo(pts[i].x, pts[i].y);
+                ctx.lineTo(mouse.x, mouse.y);
+                ctx.stroke();
+            }
+            ctx.beginPath();
+            ctx.arc(pts[i].x, pts[i].y, pts[i].r, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0,208,255,.5)';
+            ctx.fill();
+            pts[i].x += pts[i].vx; pts[i].y += pts[i].vy;
+            if (pts[i].x < 0 || pts[i].x > W) pts[i].vx *= -1;
+            if (pts[i].y < 0 || pts[i].y > H) pts[i].vy *= -1;
+        }
+        rafId = requestAnimationFrame(frameParticles);
+    }
+
+    const CHARS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEFKOLARIT';
+    let cols = [], drops = [], matFontSize = 14;
+
+    function initMatrix() {
+        matFontSize = 14;
+        cols = Math.floor(W / matFontSize);
+        drops = Array.from({ length: cols }, () => Math.random() * -50);
+    }
+
+    function frameMatrix() {
+        if (!matrixMode) return;
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.font = matFontSize + 'px monospace';
+        for (let i = 0; i < cols; i++) {
+            const ch = CHARS[Math.floor(Math.random() * CHARS.length)];
+            const y = drops[i] * matFontSize;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(ch, i * matFontSize, y);
+            ctx.fillStyle = '#00ff41';
+            if (drops[i] > 1) {
+                const prevCh = CHARS[Math.floor(Math.random() * CHARS.length)];
+                ctx.fillText(prevCh, i * matFontSize, (drops[i] - 1) * matFontSize);
+            }
+            if (y > H && Math.random() > 0.975) drops[i] = 0;
+            drops[i] += 0.5 + Math.random() * 0.5;
+        }
+        rafId = requestAnimationFrame(frameMatrix);
+    }
+
+    window._canvasSetMatrix = function(on) {
+        matrixMode = on;
+        cancelAnimationFrame(rafId);
+        ctx.clearRect(0, 0, W, H);
+        if (on) {
+            initMatrix();
+            frameMatrix();
+        } else {
+            frameParticles();
+        }
+    };
+
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+    resize();
+    pts = Array.from({ length: N }, mkPt);
+    frameParticles();
+})();
+
+// ═══════════════════════════════════════════════════════════
+// 2. GLITCH EFEKT
+// ═══════════════════════════════════════════════════════════
+(function () {
+    const el = document.getElementById('main-title');
+    function glitch() {
+        el.classList.add('glitching');
+        setTimeout(() => el.classList.remove('glitching'), 500);
+        setTimeout(glitch, 7000 + Math.random() * 9000);
+    }
+    setTimeout(glitch, 2500 + Math.random() * 3000);
+})();
+
+// ═══════════════════════════════════════════════════════════
+// 3. HODINY + DATUM
+// ═══════════════════════════════════════════════════════════
+const DAYS = ['Neděle','Pondělí','Úterý','Středa','Čtvrtek','Pátek','Sobota'];
+const MONTHS = ['ledna','února','března','dubna','května','června','července','srpna','září','října','listopadu','prosince'];
+function tick() {
+    const n = new Date();
+    document.getElementById('clock').textContent = String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
+    document.getElementById('date-display').textContent = DAYS[n.getDay()] + ' ' + n.getDate() + '. ' + MONTHS[n.getMonth()];
+}
+tick(); setInterval(tick, 10000);
+
+// ═══════════════════════════════════════════════════════════
+// 4. STATUS PING
+// ═══════════════════════════════════════════════════════════
+const STATUS_INTERVAL = 60 * 1000;
+const STATUS_TIMEOUT  = 6000;
+
+function checkTile(wrapper) {
+    const tile   = wrapper.querySelector('.tile, .admin-tile');
+    const dot    = wrapper.querySelector('.status-dot');
+    const ttStat = wrapper.querySelector('.tooltip-status');
+    if (!tile || !dot) return;
+
+    const url = tile.dataset.url;
+    if (!url) return;
+
+    let host = url;
+    try { const u = new URL(url); host = u.hostname + (u.port ? ':' + u.port : ''); } catch(e) {}
+
+    const setStatus = (state, label) => {
+        dot.className = 'status-dot ' + state;
+        if (ttStat) {
+            ttStat.className = 'tooltip-status ts-' + state;
+            const span = ttStat.querySelector('.ts-text');
+            if (span) span.textContent = label;
+        }
+    };
+
+    setStatus('checking', 'Kontrola...');
+    const isLocal = /^(192\.168\.|10\.|172\.(1[6-9]|2\d|3[01])\.|localhost)/.test(host);
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), STATUS_TIMEOUT);
+
+    fetch(url, {
+        method: 'HEAD',
+        mode: 'no-cors',
+        cache: 'no-store',
+        signal: controller.signal
+    })
+    .then(res => { clearTimeout(tid); setStatus('online', 'Online'); })
+    .catch(err => {
+        clearTimeout(tid);
+        setStatus(err.name === 'AbortError' ? 'offline' : 'offline', err.name === 'AbortError' ? 'Timeout' : 'Offline');
+    });
+}
+
+function checkAllStatuses() {
+    document.querySelectorAll('.tile-wrapper, .admin-tile-wrapper').forEach(checkTile);
+}
+setTimeout(checkAllStatuses, 800);
+setInterval(checkAllStatuses, STATUS_INTERVAL);
+
+// ═══════════════════════════════════════════════════════════
+// 5. COMMAND PALETTE
+// ═══════════════════════════════════════════════════════════
+(function () {
+    const overlay = document.getElementById('cmd-overlay');
+    const input   = document.getElementById('cmd-input');
+    const list    = document.getElementById('cmd-results');
+    let active = -1;
+
+    const open = () => {
+        overlay.classList.remove('hidden');
+        input.value = '';
+        active = -1;
+        render('');
+        requestAnimationFrame(() => input.focus());
+    };
+    const close = () => { overlay.classList.add('hidden'); };
+
+    function hl(text, q) {
+        if (!q) return text;
+        const i = text.toLowerCase().indexOf(q.toLowerCase());
+        if (i < 0) return text;
+        return text.slice(0, i) + '<mark>' + text.slice(i, i + q.length) + '</mark>' + text.slice(i + q.length);
+    }
+
+    function render(q) {
+        // Dynamicky načteme jen ty dlaždice, které jsou aktuálně viditelné (aby neviděl např. skryté admin věci)
+        const allTiles = Array.from(document.querySelectorAll('.tile, .admin-tile')).filter(el => el.offsetParent !== null);
+        const services = allTiles.map(a => ({
+            name: a.dataset.name, url: a.href, img: a.querySelector('img')?.src || ''
+        })).filter(s => s.name);
+
+        const seen = new Set();
+        const hits = (q ? services.filter(s => s.name.toLowerCase().includes(q.toLowerCase())) : services)
+            .filter(s => { if (seen.has(s.name + s.url)) return false; seen.add(s.name + s.url); return true; });
+        
+        list.innerHTML = hits.map((s, i) => {
+            let host = '';
+            try { const u = new URL(s.url); host = u.hostname + (u.port ? ':' + u.port : ''); } catch(e) {}
+            return `<li class="cmd-item${i === active ? ' cmd-active' : ''}" data-url="${s.url}">
+                <img src="${s.img}" width="20" height="20" style="border-radius:4px;flex-shrink:0" alt="">
+                <span class="cmd-name">${hl(s.name, q)}</span>
+                <span class="cmd-host">${host}</span>
+            </li>`;
+        }).join('');
+        
+        list.querySelectorAll('.cmd-item').forEach(li =>
+            li.addEventListener('click', () => { window.open(li.dataset.url, '_blank'); close(); })
+        );
+    }
+
+    function move(d) {
+        const items = list.querySelectorAll('.cmd-item');
+        if (!items.length) return;
+        active = (active + d + items.length) % items.length;
+        items.forEach((li, i) => li.classList.toggle('cmd-active', i === active));
+        items[active]?.scrollIntoView({ block: 'nearest' });
+    }
+
+    input.addEventListener('input', () => { active = -1; render(input.value); });
+    input.addEventListener('keydown', e => {
+        if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
+        else if (e.key === 'Enter') {
+            const items = list.querySelectorAll('.cmd-item');
+            const t = active >= 0 ? items[active] : items[0];
+            if (t) { window.open(t.dataset.url, '_blank'); close(); }
+        }
+        else if (e.key === 'Escape') close();
+    });
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+    document.getElementById('cmd-btn').addEventListener('click', open);
+    document.getElementById('cmd-close').addEventListener('click', close);
+    document.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); open(); }
+        else if (e.key === '/' && document.activeElement.tagName !== 'INPUT') { e.preventDefault(); open(); }
+    });
+})();
+
+// ═══════════════════════════════════════════════════════════
+// 6. LOGIN SYSTÉM & ADMIN MODE
+// ═══════════════════════════════════════════════════════════
+(function () {
+    const loginOverlay = document.getElementById('login-overlay');
+    const loginInput   = document.getElementById('login-input');
+    const loginError   = document.getElementById('login-error');
+    const loginBox     = document.querySelector('.login-box');
+    const logo         = document.querySelector('.logo');
+    const logoutBtn    = document.getElementById('logout-btn');
+
+    let isAdmin = false;
+
+    // HASH Hesla (Výchozí heslo: "admin")
+    // Pokud chceš heslo změnit, vygeneruj si SHA-256 hash nového hesla a přepiš ho zde.
+    const CORRECT_HASH = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";
+
+    // Funkce pro hashování vstupu na frontendu (využívá Web Crypto API)
+    async function hashPassword(password) {
+        const msgUint8 = new TextEncoder().encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function openLogin() {
+        if (isAdmin) return; // Pokud už je přihlášen, neotvíráme znovu
+        loginOverlay.classList.remove('hidden');
+        loginInput.value = '';
+        loginError.classList.add('hidden');
+        loginBox.classList.remove('shake');
+        requestAnimationFrame(() => loginInput.focus());
+    }
+
+    function closeLogin() {
+        loginOverlay.classList.add('hidden');
+        loginInput.value = '';
+    }
+
+    async function attemptLogin() {
+        const pass = loginInput.value;
+        const hash = await hashPassword(pass);
+
+        if (hash === CORRECT_HASH) {
+            // Úspěšné přihlášení
+            isAdmin = true;
+            closeLogin();
+            
+            // Aktivace Admin prostředí
+            document.body.classList.add('logged-in');
+            document.body.classList.add('matrix-mode');
+            window._canvasSetMatrix(true); // Zapnutí matrix deště
+            
+            document.getElementById('local-services').classList.add('active');
+            document.getElementById('admin-section').classList.add('active');
+            
+            // Pingnutí nově odkrytých služeb
+            setTimeout(checkAllStatuses, 300);
+        } else {
+            // Chybné heslo
+            loginError.classList.remove('hidden');
+            loginBox.classList.remove('shake');
+            void loginBox.offsetWidth; // trigger reflow pro reset animace
+            loginBox.classList.add('shake');
+            loginInput.value = '';
+            loginInput.focus();
+        }
+    }
+
+    function logout() {
+        isAdmin = false;
+        document.body.classList.remove('logged-in');
+        document.body.classList.remove('matrix-mode');
+        window._canvasSetMatrix(false); // Vypnutí matrix deště a návrat na particles
+        
+        document.getElementById('local-services').classList.remove('active');
+        document.getElementById('admin-section').classList.remove('active');
+    }
+
+    // --- Události pro Login okno ---
+    loginOverlay.addEventListener('click', e => { if (e.target === loginOverlay) closeLogin(); });
+    document.getElementById('login-close').addEventListener('click', closeLogin);
+    
+    loginInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); attemptLogin(); }
+        if (e.key === 'Escape') closeLogin();
+    });
+
+    logoutBtn.addEventListener('click', logout);
+
+    // --- Triggery pro vyvolání přihlašování ---
+    let tapCount = 0;
+    let tapTimeout;
+
+    // Alt + klik na logo NEBO 5x rychlé poklepání
+    logo.addEventListener('click', e => {
+        if (e.altKey) { 
+            e.preventDefault(); 
+            openLogin(); 
+            return; 
+        }
+
+        tapCount++;
+        clearTimeout(tapTimeout);
+
+        if (tapCount >= 5) {
+            e.preventDefault();
+            openLogin();
+            tapCount = 0;
+            if (navigator.vibrate) navigator.vibrate(50);
+        } else {
+            tapTimeout = setTimeout(() => { tapCount = 0; }, 400);
+        }
+    });
+
+    // Alt + A klávesová zkratka
+    document.addEventListener('keydown', e => {
+        if (e.altKey && e.key.toLowerCase() === 'a' && document.activeElement.tagName !== 'INPUT') {
+            e.preventDefault();
+            openLogin();
+        }
+    });
+})();
+
+// ═══════════════════════════════════════════════════════════
+// 7. KONAMI KÓD → Hard glitch + Matrix Easter egg
+// ═══════════════════════════════════════════════════════════
+(function () {
+    const SEQ = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight'];
+    let pos = 0;
+    let konamiActive = false;
+
+    document.addEventListener('keydown', e => {
+        pos = e.key === SEQ[pos] ? pos + 1 : (e.key === SEQ[0] ? 1 : 0);
+        if (pos === SEQ.length) { pos = 0; fire(); }
+    });
+
+    function fire() {
+        if (konamiActive) return;
+        konamiActive = true;
+
+        const tiles = document.querySelectorAll('.tile, .admin-tile');
+        const title = document.getElementById('main-title');
+        const canvas = document.getElementById('bg-canvas');
+        const wasMatrix = document.body.classList.contains('matrix-mode'); // pamatujeme si, jestli už byl matrix zapnutý z přihlášení
+
+        tiles.forEach(t => {
+            const rx = (Math.random() - .5) * 28;
+            const ry = (Math.random() - .5) * 18;
+            const s  = .85 + Math.random() * .3;
+            t.style.transition = 'transform .35s cubic-bezier(.36,.07,.19,.97)';
+            t.style.transform  = `rotate(${rx}deg) translateY(${ry}px) scale(${s})`;
+        });
+
+        window._canvasSetMatrix(true);
+        document.body.classList.add('matrix-mode');
+        title.classList.add('glitch-hard');
+
+        setTimeout(() => {
+            if (!wasMatrix) { // Fade out plátna jen pokud nebyl uživatel přihlášený
+                canvas.style.transition = 'opacity 0.6s ease';
+                canvas.style.opacity = '0';
+            }
+
+            tiles.forEach(t => { t.style.transform = ''; });
+            title.classList.remove('glitch-hard');
+            if (!wasMatrix) document.body.classList.remove('matrix-mode');
+
+            setTimeout(() => {
+                if (!wasMatrix) {
+                    window._canvasSetMatrix(false);
+                    canvas.style.opacity = '1';
+                }
+                konamiActive = false;
+                setTimeout(() => { canvas.style.transition = ''; }, 600);
+            }, 600);
+        }, 5000);
+    }
+})();
+</script>
+</body>
+</html>

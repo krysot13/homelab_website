@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KolarIT Dashboard</title>
+    <link rel="icon" type="image/jpeg" href="logo.png">
+    <meta name="theme-color" content="#070d14">
+    <link rel="stylesheet" href="style3.css">
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard">
+            <div class="logo-container">
+                <img src="logo.png" alt="KolarIT Logo" class="logo">
+            </div>
+            
+            <div class="hero">
+                <h1>KolarIT</h1>
+                <p id="desc-text">Rychlý přehled veřejných služeb.</p>
+
+                <div class="info-bar">
+                    <span id="clock">--:--</span>
+                    <span class="info-sep"></span>
+                    <span id="date-display">---</span>
+                </div>
+                
+                <div class="toggle-container">
+                    <span class="toggle-label">Veřejné</span>
+                    <label class="switch">
+                        <input type="checkbox" id="serviceToggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="toggle-label">Lokální</span>
+                </div>
+            </div>
+
+            <div id="public-services" class="services-wrapper active">
+                <div class="inner-content">
+                    <ul>
+                        <li>
+                            <a href="http://jellyfin.kolarit.online/" target="_blank" rel="noopener noreferrer">
+                                <img class="service-icon" src="https://www.google.com/s2/favicons?domain=jellyfin.org&sz=64" alt="" onerror="this.src='https://www.google.com/s2/favicons?domain=jellyfin.kolarit.online&sz=64'">
+                                Jellyfin
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://files.kolarit.online/" target="_blank" rel="noopener noreferrer">
+                                <img class="service-icon" src="https://www.google.com/s2/favicons?domain=filebrowser.org&sz=64" alt="" onerror="this.src='https://www.google.com/s2/favicons?domain=files.kolarit.online&sz=64'">
+                                Files
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://immich.kolarit.online/" target="_blank" rel="noopener noreferrer">
+                                <img class="service-icon" src="https://www.google.com/s2/favicons?domain=immich.app&sz=64" alt="" onerror="this.src='https://www.google.com/s2/favicons?domain=immich.kolarit.online&sz=64'">
+                                Immich
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://ha.kolarit.online/" target="_blank" rel="noopener noreferrer">
+                                <img class="service-icon" src="https://www.google.com/s2/favicons?domain=home-assistant.io&sz=64" alt="" onerror="this.src='https://www.google.com/s2/favicons?domain=ha.kolarit.online&sz=64'">
+                                Home Assistant
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://music.kolarit.online/" target="_blank" rel="noopener noreferrer">
+                                <img class="service-icon" src="https://www.google.com/s2/favicons?domain=navidrome.org&sz=64" alt="" onerror="this.src='https://www.google.com/s2/favicons?domain=music.kolarit.online&sz=64'">
+                                Music
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://jellyseerr.kolarit.online/" target="_blank" rel="noopener noreferrer">
+                                <img class="service-icon" src="https://www.google.com/s2/favicons?domain=jellyseerr.dev&sz=64" alt="" onerror="this.src='https://www.google.com/s2/favicons?domain=jellyseerr.kolarit.online&sz=64'">
+                                Seerr
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://app.plex.tv/" target="_blank" rel="noopener noreferrer">
+                                <img class="service-icon" src="https://www.google.com/s2/favicons?domain=plex.tv&sz=64" alt="">
+                                Plex
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="local-services" class="services-wrapper">
+                <div class="inner-content">
+                    <div class="section-block">
+                        <h3>Servers</h3>
+                        <ul>
+                            <li><a href="http://192.168.0.18/" target="_blank" rel="noopener noreferrer"><img class="service-icon" src="https://www.google.com/s2/favicons?domain=zimaspace.com&sz=64" alt=""> ZimaOS</a></li>
+                            <li><a href="http://192.168.0.13/" target="_blank" rel="noopener noreferrer"><img class="service-icon" src="https://www.google.com/s2/favicons?domain=casaos.io&sz=64" alt=""> CasaOS</a></li>
+                            <li><a href="http://192.168.0.16/" target="_blank" rel="noopener noreferrer"><img class="service-icon" src="https://www.google.com/s2/favicons?domain=truenas.com&sz=64" alt=""> TrueNAS</a></li>
+                            <li><a href="http://192.168.101.20:9191/user" target="_blank" rel="noopener noreferrer"><img class="service-icon" src="https://www.google.com/s2/favicons?domain=papercut.com&sz=64" alt=""> Tisk</a></li>
+                        </ul>
+                    </div>
+                    <div class="section-block">
+                        <h3>Local services</h3>
+                        <ul>
+                            <li><a href="http://192.168.0.18:8097" target="_blank" rel="noopener noreferrer"><img class="service-icon" src="https://www.google.com/s2/favicons?domain=jellyfin.org&sz=64" alt=""> Jellyfin</a></li>
+                            <li><a href="http://192.168.0.18:10180" target="_blank" rel="noopener noreferrer"><img class="service-icon" src="https://www.google.com/s2/favicons?domain=filebrowser.org&sz=64" alt=""> Files</a></li>
+                            <li><a href="http://192.168.0.18:2283" target="_blank" rel="noopener noreferrer"><img class="service-icon" src="https://www.google.com/s2/favicons?domain=immich.app&sz=64" alt=""> Immich</a></li>
+                            <li><a href="http://192.168.0.14:8123" target="_blank" rel="noopener noreferrer"><img class="service-icon" src="https://www.google.com/s2/favicons?domain=home-assistant.io&sz=64" alt=""> Home Assistant</a></li>
+                            <li><a href="http://192.168.0.18:4533" target="_blank" rel="noopener noreferrer"><img class="service-icon" src="https://www.google.com/s2/favicons?domain=navidrome.org&sz=64" alt=""> Music</a></li>
+                            <li><a href="http://192.168.0.18:5055" target="_blank" rel="noopener noreferrer"><img class="service-icon" src="https://www.google.com/s2/favicons?domain=jellyseerr.dev&sz=64" alt=""> Seerr</a></li>
+                            <li><a href="http://192.168.0.18:32400/" target="_blank" rel="noopener noreferrer"><img class="service-icon" src="https://www.google.com/s2/favicons?domain=plex.tv&sz=64" alt=""> Plex</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Přepínač + localStorage ---
+        const toggle = document.getElementById('serviceToggle');
+        const publicDiv = document.getElementById('public-services');
+        const localDiv = document.getElementById('local-services');
+        const descText = document.getElementById('desc-text');
+
+        if (localStorage.getItem('kolarit-view') === 'local') {
+            toggle.checked = true;
+            publicDiv.classList.remove('active');
+            localDiv.classList.add('active');
+            descText.textContent = 'Lokální adresy a správa zařízení v domácí síti.';
+        }
+
+        toggle.addEventListener('change', () => {
+            if (toggle.checked) {
+                publicDiv.classList.remove('active');
+                localDiv.classList.add('active');
+                descText.textContent = 'Lokální adresy a správa zařízení v domácí síti.';
+                localStorage.setItem('kolarit-view', 'local');
+            } else {
+                localDiv.classList.remove('active');
+                publicDiv.classList.add('active');
+                descText.textContent = 'Rychlý přehled veřejných služeb.';
+                localStorage.setItem('kolarit-view', 'public');
+            }
+        });
+
+        // --- Hodiny + datum ---
+        const DAYS = ['Neděle','Pondělí','Úterý','Středa','Čtvrtek','Pátek','Sobota'];
+        const MONTHS = ['ledna','února','března','dubna','května','června','července','srpna','září','října','listopadu','prosince'];
+
+        function updateTime() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('clock').textContent = h + ':' + m;
+            document.getElementById('date-display').textContent =
+                DAYS[now.getDay()] + ' ' + now.getDate() + '. ' + MONTHS[now.getMonth()];
+        }
+        updateTime();
+        setInterval(updateTime, 10000);
+    </script>
+</body>
+</html>

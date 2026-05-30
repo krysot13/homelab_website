@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KolarIT Dashboard</title>
+    <link rel="icon" type="image/jpeg" href="logo.png">
+    <meta name="theme-color" content="#070d14">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard">
+            <div class="logo-container">
+                <img src="logo.png" alt="KolarIT Logo" class="logo">
+            </div>
+            
+            <div class="hero">
+                <h1>KolarIT</h1>
+                <p id="desc-text">Rychlý přehled veřejných služeb.</p>
+                
+                <div class="toggle-container">
+                    <span class="toggle-label">Veřejné</span>
+                    <label class="switch">
+                        <input type="checkbox" id="serviceToggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="toggle-label">Lokální</span>
+                </div>
+            </div>
+
+            <div id="public-services" class="services-wrapper active">
+                <div class="inner-content">
+                    <ul>
+                        <li>
+                            <a href="http://jellyfin.kolarit.online/" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 4v16M16 4v16M4 8h4M4 16h4M16 8h4M16 16h4"/></svg>
+                                Jellyfin
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://files.kolarit.online/" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 8.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+                                Files
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://immich.kolarit.online/" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><path d="M15 8h.01M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6z"/><circle cx="12" cy="13" r="4"/></svg>
+                                Immich
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://ha.kolarit.online/" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+                                Home Assistant
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://music.kolarit.online/" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                                Music
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://jellyseerr.kolarit.online/" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                Seerr
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://app.plex.tv/" target="_blank" rel="noopener noreferrer">
+                                <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 4v16M16 4v16M4 8h4M4 16h4M16 8h4M16 16h4"/></svg>
+                                Plex
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="local-services" class="services-wrapper">
+                <div class="inner-content">
+                    <div class="section-block">
+                        <h3>Servers</h3>
+                        <ul>
+                            <li><a href="http://192.168.0.18/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 8h.01M6 18h.01"/></svg> ZimaOS</a></li>
+                            <li><a href="http://192.168.0.13/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 8h.01M6 18h.01"/></svg> CasaOS</a></li>
+                            <li><a href="http://192.168.0.16/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 8h.01M6 18h.01"/></svg> TrueNAS</a></li>
+                            <li><a href="http://192.168.0.13:9191/user" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Tisk</a></li>
+                        </ul>
+                    </div>
+                    <div class="section-block">
+                        <h3>Local services</h3>
+                        <ul>
+                            <li><a href="http://192.168.0.18:8097" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 4v16M16 4v16M4 8h4M4 16h4M16 8h4M16 16h4"/></svg> Jellyfin</a></li>
+                            <li><a href="http://192.168.0.18:10180" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 8.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg> Files</a></li>
+                            <li><a href="http://192.168.0.18:2283" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M15 8h.01M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6z"/><circle cx="12" cy="13" r="4"/></svg> Immich</a></li>
+                            <li><a href="http://192.168.0.14:8123" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg> Home Assistant</a></li>
+                            <li><a href="http://192.168.0.18:4533" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> Music</a></li>
+                            <li><a href="http://192.168.0.18:5055" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg> Seerr</a></li>
+                            <li><a href="http://192.168.0.18:32400/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 4v16M16 4v16M4 8h4M4 16h4M16 8h4M16 16h4"/></svg> Plex</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const toggle = document.getElementById('serviceToggle');
+        const publicDiv = document.getElementById('public-services');
+        const localDiv = document.getElementById('local-services');
+        const descText = document.getElementById('desc-text');
+
+        toggle.addEventListener('change', () => {
+            if (toggle.checked) {
+                publicDiv.classList.remove('active');
+                localDiv.classList.add('active');
+                descText.textContent = 'Lokální adresy a správa zařízení v domácí síti.';
+            } else {
+                localDiv.classList.remove('active');
+                publicDiv.classList.add('active');
+                descText.textContent = 'Rychlý přehled veřejných služeb.';
+            }
+        });
+    </script>
+</body>
+</html>
